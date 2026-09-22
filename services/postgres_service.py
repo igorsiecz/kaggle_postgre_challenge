@@ -4044,6 +4044,8 @@ COMMIT;
         length_expr = f"char_length({text_expr})"
         numeric_expr = f"{value_expr}::numeric"
         stats_cte = ""
+        # Keep the backslash outside f-string replacement fields for Python 3.10/3.11 compatibility.
+        escape_literal = sql_literal("\\")
 
         if rule == "not_blank":
             valid_expr = f"NOT {blank_expr}"
@@ -4054,14 +4056,14 @@ COMMIT;
             like_value = sql_literal(cls._qa_escape_like_text(text_value))
             valid_expr = (
                 f"{value_expr} IS NOT NULL "
-                f"AND {text_expr} ILIKE '%' || {like_value} || '%' ESCAPE {sql_literal('\\')}"
+                f"AND {text_expr} ILIKE '%' || {like_value} || '%' ESCAPE {escape_literal}"
             )
         elif rule == "not_contains":
             text_value = cls._qa_required_text(params, "text")
             like_value = sql_literal(cls._qa_escape_like_text(text_value))
             valid_expr = (
                 f"{value_expr} IS NOT NULL "
-                f"AND {text_expr} NOT ILIKE '%' || {like_value} || '%' ESCAPE {sql_literal('\\')}"
+                f"AND {text_expr} NOT ILIKE '%' || {like_value} || '%' ESCAPE {escape_literal}"
             )
         elif rule in {"length_lt", "length_lte", "length_gt", "length_gte"}:
             limit = cls._qa_required_integer(params, "limit")
