@@ -4044,7 +4044,7 @@ COMMIT;
         length_expr = f"char_length({text_expr})"
         numeric_expr = f"{value_expr}::numeric"
         stats_cte = ""
-        escape_literal = sql_literal("\\\\")
+        escape_literal = sql_literal("\\")
 
         if rule == "not_blank":
             valid_expr = f"NOT {blank_expr}"
