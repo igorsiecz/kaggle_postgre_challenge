@@ -4044,6 +4044,7 @@ COMMIT;
         length_expr = f"char_length({text_expr})"
         numeric_expr = f"{value_expr}::numeric"
         stats_cte = ""
+        # Keep the backslash outside f-string replacement fields for Python 3.10/3.11 compatibility.
         escape_literal = sql_literal("\\")
 
         if rule == "not_blank":
